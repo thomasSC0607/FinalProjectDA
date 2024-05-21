@@ -1,7 +1,7 @@
 import random
 
 
-class Estacion:
+class Estacion:  # Clase para los vertices
     def __init__(self, id, nombre):
         self.id = id
         self.nombre = nombre
@@ -9,12 +9,12 @@ class Estacion:
         self.pasajeros_llegada = []  # El unico que implementa este atributo es la estacion Guadalajara
 
 
-class Ruta:
+class Ruta:  # Clase para las aristas
     def __init__(self, estacion_inicio, estacion_destino, distancia, direccion):  # Representacion de las aristas
         self.estacion_inicio = estacion_inicio
         self.estacion_destino = estacion_destino
         self.distancia = distancia  # Peso de la arista
-        self.direccion = direccion
+        self.direccion = direccion  # Direccion en grados para conocer cuando se realiza un giro
 
     def __str__(self):
         return f'{self.estacion_inicio.nombre} ----> {self.estacion_destino.nombre} :: distacia: {self.distancia} km'
@@ -23,19 +23,17 @@ class Ruta:
 class Ciudad:
     def __init__(self):
         self.estaciones = {}  # Diccionario de todas las estaciones
-        self.caminos_dic = {}
-        self.caminos_lista = []
+        self.caminos_lista = []  # Lista con todos los caminos
         self.rutas = []  # Lista de todas las rutas
-        self.total_rutas = 0
+        self.rutas_posibles_dict = {}  # Todas las rutas posibles desde A hasta B
+        self.rutas_distancia_dict = {}  # Las respectivas distancias de cada ruta desde A hasta B
+        self.rutas_giros_dict = {}  # Los respectivos giros realizados en cada ruta desde A hasta B
+        self.total_rutas = 0  # Total de rutas posibles desde A hasta B
 
-    def imprimir_caminos(self):
-        for clave, valor in self.caminos_dic.items():
-            print(clave, ":", valor)
-
-    def add_estacion(self, estacion):
+    def add_estacion(self, estacion):  # Agregar cada vertice a la ciudad
         self.estaciones[estacion.id] = estacion
 
-    def add_ruta(self, estacion_inicio, estacion_destino, distancia, direccion):
+    def add_ruta(self, estacion_inicio, estacion_destino, distancia, direccion):  # Agregar la concexion de cada vertice
         if estacion_inicio.id in self.estaciones and estacion_destino.id in self.estaciones:
             ruta = Ruta(estacion_inicio, estacion_destino, distancia, direccion)
             self.rutas.append(ruta)
@@ -52,6 +50,10 @@ class Ciudad:
         if inicio == destino:
             giros_totales = self.giros(ruta_actual)
             self.mostrar_ruta(ruta_actual, distancia_total, giros_totales)
+            id_ruta = self.total_rutas
+            self.rutas_posibles_dict[id_ruta] = ruta_actual
+            self.rutas_distancia_dict[id_ruta] = distancia_total
+            self.rutas_giros_dict[id_ruta] = giros_totales
         else:
             for ruta in self.rutas:  # se itera sobre todas las rutas en la lista rutas de la ciudad.
                 if ruta.estacion_inicio == inicio and ruta.estacion_destino not in ruta_actual:
@@ -60,9 +62,9 @@ class Ciudad:
 
     def mostrar_ruta(self, ruta, distancia_total, giros):
         giros_totales = giros
-        n = 1
+
         if ruta:
-            print(f"\nRUTA ENCONTRADA:")
+            print(f"\nRUTA {self.total_rutas} ENCONTRADA:")
             self.total_rutas += 1
             for i in range(len(ruta) - 1):
                 print(f"{ruta[i].nombre} -> {ruta[i + 1].nombre}")
@@ -70,11 +72,70 @@ class Ciudad:
                 f"Distancia total de la ruta: {distancia_total} km, giros totales realizados en la ruta: {giros_totales}")
             print('-' * 20)
 
-    def organizar_rutas_distancia(self):
-        n = len(self.caminos_dic)
-        for i in range(n):
-            for j in range(0, n - i - 1):
-                return
+    def mostrar_rutas_posibles(self):
+        print("5 PRIMERAS RUTAS POSIBLES")
+        for i, (clave, valor) in enumerate(self.rutas_posibles_dict.items()):
+            if i >= 5:
+                break
+            print(clave, ":", valor)
+
+    def mostrar_distancias_diccionario(self):
+        print("\n5 PRIMERAS DISTANCIAS DICIONARIOS, CORRESPONDIENTES A LAS RUTAS POSIBLES\n")
+        for i, (clave, valor) in enumerate(self.rutas_distancia_dict.items()):
+            if i >= 5:
+                break
+            print(clave, ":", valor)
+
+    # Organizar las rutas con respecto al parametro el cual es un diccionario usando MergeSort
+    def organizar_rutas(self, diccionario):
+        items = list(diccionario.items())
+        sorted_items = self.merge_sort_by_values(items)
+        sorted_dict = {key: value for key, value in sorted_items}
+
+        print("\nPRIMERAS 5 DISTANCIAS ORGANIZADAS\n")
+        for i, (clave, valor) in enumerate(sorted_dict.items()):
+            if i >= 5:
+                break
+            print(clave, ":", valor)
+        sorted_keys = sorted_dict.keys()
+
+        dic_aux = {}
+        for i, clave in enumerate(sorted_keys):
+            if i >= 5:
+                break
+            dic_aux[clave] = self.rutas_posibles_dict[clave]
+
+        print("\nPRIMEROS 5 CAMINOS MAS RAPIDOS\n")
+        for clave, lista in dic_aux.items():
+            nombres = '--> '.join(objeto.nombre for objeto in lista)
+            print(f'{clave}: {nombres}')
+        return
+
+    def merge_sort_by_values(self, items):
+        if len(items) <= 1:
+            return items
+
+        mid = len(items) // 2
+        left_half = self.merge_sort_by_values(items[:mid])
+        right_half = self.merge_sort_by_values(items[mid:])
+
+        return self.merge_by_values(left_half, right_half)
+
+    def merge_by_values(self, left, right):
+        sorted_list = []
+        left_index, right_index = 0, 0
+
+        while left_index < len(left) and right_index < len(right):
+            if left[left_index][1] <= right[right_index][1]:
+                sorted_list.append(left[left_index])
+                left_index += 1
+            else:
+                sorted_list.append(right[right_index])
+                right_index += 1
+
+        sorted_list.extend(left[left_index:])
+        sorted_list.extend(right[right_index:])
+        return sorted_list
 
     def giros(self, ruta):
         lista_rutas = []
@@ -92,15 +153,9 @@ class Ciudad:
             lista_giros.append(ruta.direccion)
 
         for i in range(len(lista_giros) - 1):
-            if abs(lista_giros[i + 1] - lista_giros[i]) > 30:
+            if abs(lista_giros[i + 1] - lista_giros[i]) > 30:  # Un giro es un movimiento de mas de 30 grados
                 giros += 1
         return giros
-
-    def add_caminos_dic(self):
-        n = 1
-        for ruta in self.caminos_lista:
-            self.caminos_dic['Ruta ' + str(n)] = ruta
-            n += 1
 
     def mostar_ciudad(self):
         for ruta in self.rutas:

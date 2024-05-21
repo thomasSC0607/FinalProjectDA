@@ -259,10 +259,39 @@ if __name__ == "__main__":
     ciudad.add_ruta(VE38, VE41, 0.115, 305)
     ciudad.add_ruta(VE41, VE38, 0.115, 125)
 
-    ciudad.mostar_ciudad()
+    def menu():
+        print("\nBienvenido al programa, ENCONTRAR RUTAS DESDE MCDONALD'S HASTA PERGAMINO CAFÉ")
+        opciones = int(input("\nSeleccione la opción a proseguir:\n"
+                             "1. Mostar todas las rutas posibles\n"
+                             "2. Organizar e imprimir las rutas con respecto a la menor distancia recorrida\n"
+                             "3. Organizar e imprimir las rutas con respecto a la menor cantidad de giros realizados\n"
+                             "4. Finalizar programa\n\n"))
 
-    # Encuentra todas las rutas desde mc al cafe
-    ciudad.encontrar_todas_las_rutas('V8', 'V20')
-    print(f"Rutas posibles totales: {ciudad.total_rutas}")
-    ciudad.add_caminos_dic()
-    ciudad.imprimir_caminos()
+        while opciones < 1 or opciones > 4:
+            opciones = int(input("\nSeleccione una opción correcta Dios mio, entre 1 y 4, no entre menos infinito e "
+                                 "infinito:\n"
+                                 "1. Mostar todas las rutas posibles\n"
+                                 "2. Organizar e imprimir las rutas con respecto a la menor distancia recorrida\n"
+                                 "3. Organizar e imprimir las rutas con respecto a la menor cantidad de giros "
+                                 "realizados\n"
+                                 "4. Finalizar programa\n"))
+
+        if opciones == 1:
+            ciudad.mostar_ciudad()
+            # Encuentra todas las rutas desde mc al cafe
+            print("\nTODAS LAS RUTAS POSIBLES DESDE MCDONALD'S HASTA CAFÉ PERGAMINO\n")
+            ciudad.encontrar_todas_las_rutas('V8', 'V20')
+            print(f"Rutas posibles totales: {ciudad.total_rutas}")
+            menu()
+        if opciones == 2:
+            print("\nRUTAS ORGANIZADAS CON RESPECTO A LA DISTANCIA RECORRIDA EN KM\n")
+            ciudad.organizar_rutas(ciudad.rutas_distancia_dict)
+            menu()
+        if opciones == 3:
+            print("\nRUTAS ORGANIZADAS CON RESPECTO A LA MENOR CANTIDAD DE GIROS REALIZADOS\n")
+            ciudad.organizar_rutas(ciudad.rutas_giros_dict)
+            menu()
+        if opciones == 4:
+            print("\nGRACIAS POR USAR NUESTRO PROGRAMA\n")
+
+    menu()
