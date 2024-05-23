@@ -92,20 +92,26 @@ class Ciudad:
         sorted_items = self.merge_sort_by_values(items)
         sorted_dict = {key: value for key, value in sorted_items}
 
-        print("\nPRIMERAS 5 DISTANCIAS ORGANIZADAS\n")
+        print("\nPRIMERAS 10 DISTANCIAS ORGANIZADAS\n")
         for i, (clave, valor) in enumerate(sorted_dict.items()):
-            if i >= 5:
+            if i >= 10:
                 break
             print('Ruta ' + str(clave), ":", str(round(valor, 3)) + ' Km')
+
+        print("\nULTIMAS 10 DISTANCIAS ORGANIZADAS\n")
+        for i, (clave, valor) in enumerate(sorted_dict.items()):
+            dif = len(sorted_dict.items()) - i
+            if 1 <= dif <= 10:
+                print('Ruta ' + str(clave), ":", str(round(valor, 3)) + ' Km')
         sorted_keys = sorted_dict.keys()
 
         dic_aux = {}
         for i, clave in enumerate(sorted_keys):
-            if i >= 5:
+            if i >= 10:
                 break
             dic_aux[clave] = self.rutas_posibles_dict[clave]
 
-        print("\nPRIMEROS 5 CAMINOS MAS RAPIDOS SEGUN KM RECORRIDOS\n")
+        print("\nPRIMEROS 10 CAMINOS MAS RAPIDOS SEGUN KM RECORRIDOS\n")
         for clave, lista in dic_aux.items():
             nombres = '--> '.join(objeto.nombre for objeto in lista)
             print(f'Ruta {clave}: {nombres}')
@@ -118,20 +124,26 @@ class Ciudad:
         sorted_items = self.merge_sort_by_values(items)
         sorted_dict = {key: value for key, value in sorted_items}
 
-        print("\nPRIMERAS 5 DISTANCIAS ORGANIZADAS\n")
+        print("\nPRIMERAS 10 DISTANCIAS ORGANIZADAS POR GIROS\n")
         for i, (clave, valor) in enumerate(sorted_dict.items()):
-            if i >= 5:
+            if i >= 10:
                 break
             print('Ruta ' + str(clave), ":", str(valor) + ' Giros')
+
+        print("\nULTIMAS 10 DISTANCIAS ORGANIZADAS POR GIROS\n")
+        for i, (clave, valor) in enumerate(sorted_dict.items()):
+            dif = len(sorted_dict.items()) - i
+            if 1 <= dif <= 10:
+                print('Ruta ' + str(clave), ":", str(round(valor, 3)) + ' Giros')
         sorted_keys = sorted_dict.keys()
 
         dic_aux = {}  # Diccionario auxiliar donde se gurdan las distancias organizadas
         for i, clave in enumerate(sorted_keys):
-            if i >= 5:
+            if i >= 10:
                 break
             dic_aux[clave] = self.rutas_posibles_dict[clave]
 
-        print("\nPRIMEROS 5 CAMINOS MAS RAPIDOS SEGUN NUMERO DE GIROS REALIZADOS\n")
+        print("\nPRIMEROS 10 CAMINOS MAS RAPIDOS SEGUN NUMERO DE GIROS REALIZADOS\n")
         for clave, lista in dic_aux.items():
             nombres = '--> '.join(objeto.nombre for objeto in lista)
             print(f'Ruta {clave}: {nombres}')
