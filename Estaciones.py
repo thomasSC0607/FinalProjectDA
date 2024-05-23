@@ -111,11 +111,26 @@ class Ciudad:
                 break
             dic_aux[clave] = self.rutas_posibles_dict[clave]
 
+        for i, clave in enumerate(sorted_keys):
+            dif = len(sorted_dict.items()) - i
+            if 1 <= dif <= 10:
+                dic_aux[clave] = self.rutas_posibles_dict[clave]
+
         print("\nPRIMEROS 10 CAMINOS MAS RAPIDOS SEGUN KM RECORRIDOS\n")
-        for clave, lista in dic_aux.items():
+        for i, (clave, lista) in enumerate(dic_aux.items()):
+            if i >= 10:
+                break
             nombres = '--> '.join(objeto.nombre for objeto in lista)
             print(f'Ruta {clave}: {nombres}')
             print(str(round(self.rutas_distancia_dict[clave], 3)) + ' Km\n')
+
+        print("\nULTIMOS 10 CAMINOS MAS RAPIDOS SEGUN KM RECORRIDOS\n")
+        for i, (clave, lista) in enumerate(dic_aux.items()):
+            dif = len(dic_aux.items()) - i
+            if 1 <= dif <= 10:
+                nombres = '--> '.join(objeto.nombre for objeto in lista)
+                print(f'Ruta {clave}: {nombres}')
+                print(str(round(self.rutas_distancia_dict[clave], 3)) + ' Km\n')
 
         return
 
@@ -143,11 +158,26 @@ class Ciudad:
                 break
             dic_aux[clave] = self.rutas_posibles_dict[clave]
 
+        for i, clave in enumerate(sorted_keys):
+            dif = len(sorted_dict.items()) - i
+            if 1 <= dif <= 10:
+                dic_aux[clave] = self.rutas_posibles_dict[clave]
+
         print("\nPRIMEROS 10 CAMINOS MAS RAPIDOS SEGUN NUMERO DE GIROS REALIZADOS\n")
-        for clave, lista in dic_aux.items():
+        for i, (clave, lista) in enumerate(dic_aux.items()):
+            if i >= 10:
+                break
             nombres = '--> '.join(objeto.nombre for objeto in lista)
             print(f'Ruta {clave}: {nombres}')
             print(str(self.rutas_giros_dict[clave]) + ' Giros\n')
+
+        print("\nULTIMOS 10 CAMINOS MAS RAPIDOS SEGUN NUMERO DE GIROS REALIZADOS\n")
+        for i, (clave, lista) in enumerate(dic_aux.items()):
+            dif = len(dic_aux.items()) - i
+            if 1 <= dif <= 10:
+                nombres = '--> '.join(objeto.nombre for objeto in lista)
+                print(f'Ruta {clave}: {nombres}')
+                print(str(round(self.rutas_giros_dict[clave], 3)) + ' Giros\n')
 
         return
 
