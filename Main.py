@@ -278,18 +278,18 @@ if __name__ == "__main__":
 
         if opciones == 1:
             ciudad.mostar_ciudad()
+            ciudad.encontrar_todas_las_rutas('V8', 'V20')
             # Encuentra todas las rutas desde mc al cafe
             print("\nTODAS LAS RUTAS POSIBLES DESDE MCDONALD'S HASTA CAFÉ PERGAMINO\n")
-            ciudad.encontrar_todas_las_rutas('V8', 'V20')
             print(f"Rutas posibles totales: {ciudad.total_rutas}")
             menu()
         if opciones == 2:
-            print("\nRUTAS ORGANIZADAS CON RESPECTO A LA DISTANCIA RECORRIDA EN KM\n")
-            ciudad.organizar_rutas(ciudad.rutas_distancia_dict)
+            # RUTAS ORGANIZADAS CON RESPECTO A LA DISTANCIA RECORRIDA EN KM
+            ciudad.organizar_rutas_distancia()
             menu()
         if opciones == 3:
-            print("\nRUTAS ORGANIZADAS CON RESPECTO A LA MENOR CANTIDAD DE GIROS REALIZADOS\n")
-            ciudad.organizar_rutas(ciudad.rutas_giros_dict)
+            # RUTAS ORGANIZADAS CON RESPECTO A LA MENOR CANTIDAD DE GIROS REALIZADOS
+            ciudad.organizar_rutas_giros()
             menu()
         if opciones == 4:
             print("\nGRACIAS POR USAR NUESTRO PROGRAMA\n")

@@ -87,8 +87,8 @@ class Ciudad:
             print(clave, ":", valor)
 
     # Organizar las rutas con respecto al parametro el cual es un diccionario usando MergeSort
-    def organizar_rutas(self, diccionario):
-        items = list(diccionario.items())
+    def organizar_rutas_distancia(self):
+        items = list(self.rutas_distancia_dict.items())
         sorted_items = self.merge_sort_by_values(items)
         sorted_dict = {key: value for key, value in sorted_items}
 
@@ -96,7 +96,7 @@ class Ciudad:
         for i, (clave, valor) in enumerate(sorted_dict.items()):
             if i >= 5:
                 break
-            print(clave, ":", valor)
+            print('Ruta ' + str(clave), ":", str(round(valor, 3)) + ' Km')
         sorted_keys = sorted_dict.keys()
 
         dic_aux = {}
@@ -105,10 +105,38 @@ class Ciudad:
                 break
             dic_aux[clave] = self.rutas_posibles_dict[clave]
 
-        print("\nPRIMEROS 5 CAMINOS MAS RAPIDOS\n")
+        print("\nPRIMEROS 5 CAMINOS MAS RAPIDOS SEGUN KM RECORRIDOS\n")
         for clave, lista in dic_aux.items():
             nombres = '--> '.join(objeto.nombre for objeto in lista)
-            print(f'{clave}: {nombres}')
+            print(f'Ruta {clave}: {nombres}')
+            print(str(round(self.rutas_distancia_dict[clave], 3)) + ' Km\n')
+
+        return
+
+    def organizar_rutas_giros(self):
+        items = list(self.rutas_giros_dict.items())
+        sorted_items = self.merge_sort_by_values(items)
+        sorted_dict = {key: value for key, value in sorted_items}
+
+        print("\nPRIMERAS 5 DISTANCIAS ORGANIZADAS\n")
+        for i, (clave, valor) in enumerate(sorted_dict.items()):
+            if i >= 5:
+                break
+            print('Ruta ' + str(clave), ":", str(valor) + ' Giros')
+        sorted_keys = sorted_dict.keys()
+
+        dic_aux = {}  # Diccionario auxiliar donde se gurdan las distancias organizadas
+        for i, clave in enumerate(sorted_keys):
+            if i >= 5:
+                break
+            dic_aux[clave] = self.rutas_posibles_dict[clave]
+
+        print("\nPRIMEROS 5 CAMINOS MAS RAPIDOS SEGUN NUMERO DE GIROS REALIZADOS\n")
+        for clave, lista in dic_aux.items():
+            nombres = '--> '.join(objeto.nombre for objeto in lista)
+            print(f'Ruta {clave}: {nombres}')
+            print(str(self.rutas_giros_dict[clave]) + ' Giros\n')
+
         return
 
     def merge_sort_by_values(self, items):
